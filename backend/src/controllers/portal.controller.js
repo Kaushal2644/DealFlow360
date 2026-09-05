@@ -135,3 +135,34 @@ export const confirmQuotationByCustomer = asyncHandler(async (req, res) => {
       : 'Quotation confirmed, moving to fulfillment'
   );
 });
+
+// Customer self-signup (public) — creates their own portal account
+export const portalSignup = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    return failure(res, 'Name, email and password are required', 400);
+  }
+
+  const existing = await Customer.findOne({ email });
+  if (existing) {
+    return failure(res, 'A customer with this email already exists', 409);
+  }
+
+  const portalPasswordHash = await Customer.hashPassword(password);
+  const customer = await Customer.create({
+    name,
+    email,
+    portalPasswordHash,
+    tier: 'bronze', // new self-signup customers start at Bronze by default
+  });
+
+  const token = generatePortalToken(customer._id);
+
+  return success(
+    res,
+    { token, customer: { id: customer._id, name: customer.name, tier: customer.tier } },
+    'Customer account created',
+    201
+  );
+});

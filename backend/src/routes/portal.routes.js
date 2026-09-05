@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   portalLogin,
+  portalSignup,
   setPortalPassword,
   getMyQuotations,
   getMyQuotationById,
@@ -16,6 +17,7 @@ const router = express.Router();
 
 // Public: customer login to the portal
 router.post('/login', portalLogin);
+router.post('/signup', portalSignup);
 
 // Internal-only: rep/admin issues portal access to a customer
 router.post('/setup-access/:customerId', protect, restrictTo(ROLES.ADMIN, ROLES.REP), setPortalPassword);
