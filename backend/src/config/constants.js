@@ -5,7 +5,7 @@ export const ROLES = {
     ADMIN: 'admin'
 }
 
-export const CUSTOMER_TIER = {
+export const CUSTOMER_TIERS = {
     BRONZE: 'bronze',
     SILVER: 'silver',
     GOLD: 'gold'
@@ -13,7 +13,7 @@ export const CUSTOMER_TIER = {
 
 export const PRODUCT_CATEGORIES = {
     HARDWARE: 'hardware',
-    SOFTWARE: 'software',
+    SERVICES: 'services',
     SUBSCRIPTION: 'subscription'
 }
 
