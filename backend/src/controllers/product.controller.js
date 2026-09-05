@@ -31,6 +31,30 @@ export const getProductById = asyncHandler(async (req, res) => {
   return success(res, product, 'Product fetched');
 });
 
+// export const getOneProduct = asyncHandler(async (req, res) => {
+//   const { price, taxPercent, quantityOnHand, category, isActive, createdAt } = req.query;
+//   const filter = {};
+//   console.log(price);
+//   if (isActive !== undefined) filter.isActive = isActive === 'true';
+
+//   if(price !== null && price == 999) {console.log("hello")};
+  
+//   //if(taxPercent !== null) filter.taxPercent = taxPercent == 0;
+
+//   if (createdAt === 'true') {
+//     const oneMinuteAgo = new Date(Date.now() - 60 * 1000);
+
+//     filter.createdAt = {
+//       $gte: oneMinuteAgo,
+//       $lte: new Date()
+//     };
+//   }
+  
+//   const products = await Product.find(filter)
+//   return success(res, products, 'Products fetched');
+  
+// });
+
 export const updateProduct = asyncHandler(async (req, res) => {
   const before = await Product.findById(req.params.id);
   if (!before) return failure(res, 'Product not found', 404);

@@ -2,6 +2,7 @@ import http from 'http';
 import app from './app.js';
 import {connectDB} from './config/db.js';
 import { env } from './config/env.js';
+import { scheduleDealHealthScan } from './jobs/dealHealthScan.js';
 
 const start = async () => {
   await connectDB();

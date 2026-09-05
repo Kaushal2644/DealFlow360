@@ -11,3 +11,11 @@ export const getCustomers = asyncHandler(async (req, res) => {
   const customers = await Customer.find({ isActive: true });
   return success(res, customers, 'Customers fetched');
 });
+
+export const deleteCustomer = asyncHandler(async (req, res) => {
+  const cust = await Customer.findByIdAndDelete(req.params.id);
+  if(!cust) {
+    return res.status(404).json({err: 'customer does not exist'});
+  }
+  return success(res, cust, 'Customer is deleted');
+})
