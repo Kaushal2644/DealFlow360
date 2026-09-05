@@ -6,7 +6,7 @@ export const success = (res, data, message = 'Success', status = 200) => {
     });
 };
 
-export const error = (res, message='Something went wrong', status=400, errors = null) =>{
+export const failure = (res, message='Something went wrong', status=400, errors = null) =>{
     res.status(status).json({
         success: false,
         message, 
