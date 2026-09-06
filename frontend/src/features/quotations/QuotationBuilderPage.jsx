@@ -210,10 +210,10 @@ export default function QuotationBuilderPage() {
       {/* Upsell panel */}
       <div>
         <div className="bg-white p-4 rounded shadow">
-          <h3 className="font-semibold mb-3">Upsell & Cross-Sell Suggestions</h3>
-          {suggestions.length === 0 && (
+          {/* <h3 className="font-semibold mb-3">Upsell & Cross-Sell Suggestions</h3> */}
+          {/* {suggestions.length === 0 && (
             <p className="text-sm text-gray-400">Add a product to see suggestions.</p>
-          )}
+          )} */}
           {suggestions.map((s) => (
             <div key={s.product.id} className="border rounded p-3 mb-3">
               <div className="flex justify-between items-start">

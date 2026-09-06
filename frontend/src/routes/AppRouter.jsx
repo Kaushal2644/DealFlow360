@@ -37,8 +37,7 @@ export default function AppRouter() {
 
         <Route element={<PrivateRoute />}>
           <Route element={<AppShell />}>
-
-          <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/quotations" element={<QuotationsListPage />} />
             <Route path="/quotations/:id" element={<QuotationBuilderPage />} />
             <Route path="/fulfillment" element={<FulfillmentListPage />} />
@@ -85,10 +84,12 @@ export default function AppRouter() {
         </Route>
 
         <Route path="/portal/login" element={<PortalLoginPage />} />
+
         <Route element={<PortalRoute />}>
           <Route element={<PortalLayout />}>
-            <Route path="/portal/quotation" element={<MyQuotationsPage/>}/>
-            <Route path="/portal/negotiation" element={<NegotiationPage/>}/>
+            <Route path="/portal/quotations" element={<MyQuotationsPage />} />
+
+            <Route path="/portal/negotiation" element={<NegotiationPage />} />
           </Route>
         </Route>
 

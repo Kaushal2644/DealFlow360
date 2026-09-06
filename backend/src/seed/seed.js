@@ -138,15 +138,22 @@ const seed = async () => {
 
   // ---------- CUSTOMERS ----------
   console.log('Seeding customers...');
-  const tiers = ['bronze', 'silver', 'gold'];
-  const customers = await Customer.insertMany(
-    COMPANY_NAMES.map((name, i) => ({
+
+const tiers = ['bronze', 'silver', 'gold'];
+
+const customers = await Customer.insertMany(
+  await Promise.all(
+    COMPANY_NAMES.map(async (name, i) => ({
       name,
       email: `${name.toLowerCase().replace(/[^a-z0-9]+/g, '.')}@example.com`,
       tier: tiers[i % 3],
       historicalAvgDiscountPercent: randInt(4, 12),
+
+      // Demo password for Customer Portal login
+      portalPasswordHash: await Customer.hashPassword('CustomerPass123'),
     }))
-  );
+  )
+);
 
   // ---------- PRODUCTS ----------
   console.log('Seeding products...');

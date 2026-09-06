@@ -1,0 +1,541 @@
+.logo-intro {
+  --navy: #050918;
+  --blue: #216cff;
+  --violet: #633cff;
+  --cyan: #19d5df;
+  --orange: #ff8a18;
+  --pink: #e93fbd;
+
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(33, 108, 255, 0.13),
+      transparent 32%
+    ),
+    var(--navy);
+
+  color: #fff;
+
+  animation: introAppear 0.8s ease both;
+}
+
+/* -------------------------------------------------- */
+/* BACKGROUND */
+/* -------------------------------------------------- */
+
+.logo-intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 48px 48px;
+
+  mask-image: radial-gradient(
+    circle at center,
+    black,
+    transparent 70%
+  );
+
+  opacity: 0.35;
+}
+
+.intro-glow {
+  position: absolute;
+
+  width: 500px;
+  height: 500px;
+
+  border-radius: 50%;
+
+  filter: blur(120px);
+
+  opacity: 0.12;
+
+  pointer-events: none;
+}
+
+.intro-glow--blue {
+  background: var(--blue);
+  left: 15%;
+  top: 20%;
+
+  animation: glowMoveBlue 7s ease-in-out infinite;
+}
+
+.intro-glow--violet {
+  background: var(--violet);
+  right: 10%;
+  bottom: 10%;
+
+  animation: glowMoveViolet 8s ease-in-out infinite;
+}
+
+/* -------------------------------------------------- */
+/* LOGO STAGE */
+/* -------------------------------------------------- */
+
+.logo-stage {
+  position: relative;
+
+  width: min(340px, 65vw);
+  aspect-ratio: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  animation: logoEnter 1.25s cubic-bezier(0.16, 1, 0.3, 1)
+    both;
+}
+
+.dealflow-logo {
+  position: relative;
+  z-index: 5;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 0 18px rgba(33, 108, 255, 0.25))
+    drop-shadow(0 20px 45px rgba(0, 0, 0, 0.45));
+
+  animation:
+    logoFloat 4s ease-in-out infinite,
+    logoGlow 2.5s ease-in-out infinite alternate;
+}
+
+/* Glow behind actual logo */
+
+.logo-halo {
+  position: absolute;
+  z-index: 1;
+
+  width: 68%;
+  height: 68%;
+
+  border-radius: 50%;
+
+  background: conic-gradient(
+    from 210deg,
+    var(--blue),
+    var(--violet),
+    var(--cyan),
+    var(--orange),
+    var(--blue)
+  );
+
+  filter: blur(55px);
+
+  opacity: 0;
+
+  animation: haloReveal 1.3s ease 0.45s forwards;
+}
+
+/* -------------------------------------------------- */
+/* ORBITS */
+/* -------------------------------------------------- */
+
+.orbit {
+  position: absolute;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.orbit--outer {
+  width: 440px;
+  height: 440px;
+
+  animation:
+    orbitReveal 1s ease 0.25s both,
+    rotateOrbit 18s linear infinite;
+}
+
+.orbit--inner {
+  width: 390px;
+  height: 390px;
+
+  border-color: rgba(33, 108, 255, 0.12);
+
+  animation:
+    orbitReveal 1s ease 0.45s both,
+    rotateOrbitReverse 13s linear infinite;
+}
+
+.orbit-dot {
+  position: absolute;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  box-shadow: 0 0 16px currentColor;
+}
+
+.orbit-dot--blue {
+  color: var(--blue);
+  background: var(--blue);
+
+  top: -4px;
+  left: 50%;
+}
+
+.orbit-dot--orange {
+  color: var(--orange);
+  background: var(--orange);
+
+  right: -4px;
+  top: 50%;
+}
+
+/* -------------------------------------------------- */
+/* BRAND */
+/* -------------------------------------------------- */
+
+.brand-content {
+  position: absolute;
+
+  top: calc(50% + 220px);
+
+  width: 100%;
+
+  text-align: center;
+
+  animation: brandEnter 0.9s ease 0.8s both;
+}
+
+.brand-content h1 {
+  margin: 0;
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    sans-serif;
+
+  font-size: clamp(32px, 5vw, 48px);
+
+  font-weight: 750;
+
+  letter-spacing: -1.8px;
+}
+
+.brand-content h1 span {
+  background: linear-gradient(
+    100deg,
+    #2474ff 0%,
+    #673cff 42%,
+    #ef42bc 70%,
+    #ff8a18 100%
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+}
+
+.brand-content p {
+  margin: 8px 0 20px;
+
+  color: rgba(255, 255, 255, 0.62);
+
+  font-size: 14px;
+
+  letter-spacing: 0.15px;
+}
+
+.loading-line {
+  width: 180px;
+  height: 2px;
+
+  margin: 0 auto 10px;
+
+  overflow: hidden;
+
+  border-radius: 99px;
+
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.loading-progress {
+  width: 0%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: linear-gradient(
+    90deg,
+    var(--blue),
+    var(--violet),
+    var(--cyan)
+  );
+
+  box-shadow: 0 0 12px rgba(33, 108, 255, 0.7);
+
+  animation: loading 2.5s cubic-bezier(0.65, 0, 0.35, 1)
+    forwards;
+}
+
+.brand-content small {
+  color: rgba(255, 255, 255, 0.32);
+
+  font-size: 10px;
+
+  letter-spacing: 1.2px;
+
+  text-transform: uppercase;
+}
+
+/* -------------------------------------------------- */
+/* EXIT */
+/* -------------------------------------------------- */
+
+.logo-intro--exit {
+  animation: introExit 0.6s cubic-bezier(0.76, 0, 0.24, 1)
+    forwards;
+}
+
+.logo-intro--exit .logo-stage {
+  animation: logoExit 0.6s cubic-bezier(0.76, 0, 0.24, 1)
+    forwards;
+}
+
+.logo-intro--exit .brand-content {
+  animation: brandExit 0.35s ease forwards;
+}
+
+/* -------------------------------------------------- */
+/* ANIMATIONS */
+/* -------------------------------------------------- */
+
+@keyframes introAppear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes logoEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.55) rotate(-12deg);
+  }
+
+  65% {
+    opacity: 1;
+    transform: scale(1.04) rotate(1deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes haloReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 0.32;
+    transform: scale(1);
+  }
+}
+
+@keyframes logoFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes logoGlow {
+  from {
+    filter:
+      drop-shadow(0 0 12px rgba(33, 108, 255, 0.2))
+      drop-shadow(0 20px 45px rgba(0, 0, 0, 0.45));
+  }
+
+  to {
+    filter:
+      drop-shadow(0 0 28px rgba(33, 108, 255, 0.38))
+      drop-shadow(0 20px 45px rgba(0, 0, 0, 0.45));
+  }
+}
+
+@keyframes orbitReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rotateOrbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotateOrbitReverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes brandEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loading {
+  0% {
+    width: 0%;
+  }
+
+  35% {
+    width: 35%;
+  }
+
+  70% {
+    width: 72%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes introExit {
+  to {
+    opacity: 0;
+    transform: scale(1.025);
+    visibility: hidden;
+  }
+}
+
+@keyframes logoExit {
+  to {
+    transform: scale(1.12);
+    opacity: 0;
+    filter: blur(10px);
+  }
+}
+
+@keyframes brandExit {
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes glowMoveBlue {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(100px, 40px);
+  }
+}
+
+@keyframes glowMoveViolet {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-80px, -60px);
+  }
+}
+
+/* -------------------------------------------------- */
+/* MOBILE */
+/* -------------------------------------------------- */
+
+@media (max-width: 600px) {
+  .logo-stage {
+    width: 270px;
+  }
+
+  .orbit--outer {
+    width: 330px;
+    height: 330px;
+  }
+
+  .orbit--inner {
+    width: 295px;
+    height: 295px;
+  }
+
+  .brand-content {
+    top: calc(50% + 180px);
+  }
+
+  .brand-content h1 {
+    font-size: 34px;
+  }
+}
+
+/* -------------------------------------------------- */
+/* ACCESSIBILITY */
+/* -------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
