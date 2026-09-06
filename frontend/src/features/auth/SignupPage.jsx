@@ -292,7 +292,6 @@ export default function SignupPage() {
                       Sales Manager
                     </option>
                     <option value="finance">Finance</option>
-                    <option value="admin">Administrator</option>
                   </select>
                 </div>
 

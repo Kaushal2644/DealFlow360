@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getApprovalDetail, actOnApproval } from '../../api/approval.api';
 import useAuthStore from '../../app/authStore';
+import { adminApproveQuotation } from '../../api/approval.api';
 
 export default function ApprovalDetailPage() {
   const { id } = useParams();
@@ -36,11 +37,39 @@ export default function ApprovalDetailPage() {
     }
   };
 
+  const handleAdminOverride = async () => {
+  if (!confirm('Approve this quotation directly, bypassing the normal approval chain?')) return;
+  setError('');
+  try {
+    await adminApproveQuotation(id, reason || 'Admin override approval');
+    alert('Quotation approved by admin override');
+    navigate('/approvals');
+  } catch (err) {
+    setError(err.response?.data?.message || 'Override failed');
+  }
+};
+
   if (loading) return <p>Loading approval detail...</p>;
   if (!quotation) return <p>Not found.</p>;
 
   const currentStep = quotation.approvalSteps[quotation.currentApprovalStepIndex];
   const canAct = currentStep && (currentStep.role === user?.role || user?.role === 'admin');
+
+  {user?.role === 'admin' && (
+  <div className="bg-purple-50 border border-purple-200 p-4 rounded mt-4">
+    <p className="text-sm font-semibold text-purple-800 mb-2">Admin Override</p>
+    <p className="text-xs text-gray-600 mb-3">
+      Approve this quotation directly, regardless of the current approval step or role
+      requirement. This bypasses the normal chain and is logged in the audit trail.
+    </p>
+    <button
+      onClick={handleAdminOverride}
+      className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+    >
+      Admin Approve
+    </button>
+  </div>
+)}
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

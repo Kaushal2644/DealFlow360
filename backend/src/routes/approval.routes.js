@@ -7,6 +7,7 @@ import {
 import { protect } from '../middleware/auth.middleware.js';
 import { restrictTo } from '../middleware/role.middleware.js';
 import { ROLES } from '../config/constants.js';
+import { adminApproveAnyQuotation } from '../controllers/approval.controller.js';
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use(restrictTo(ROLES.SALES_MANAGER, ROLES.FINANCE, ROLES.ADMIN));
 router.get('/', getPendingApprovals);
 router.get('/:id', getApprovalDetail);
 router.post('/:id/act', actOnApproval);
+router.post('/:id/admin-approve', restrictTo(ROLES.ADMIN), adminApproveAnyQuotation);
 
 export default router;

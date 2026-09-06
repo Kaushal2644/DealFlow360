@@ -14,3 +14,7 @@ export const submitNegotiationRequest = (id, payload) =>
 
 export const confirmQuotationByCustomer = (id, payload) =>
   axiosClient.post(`/portal/my-quotations/${id}/confirm`, payload).then((res) => res.data);
+
+
+export const getPortalInventory = () =>
+  axiosClient.get('/portal/inventory').then((res) => res.data);

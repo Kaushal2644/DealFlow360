@@ -12,6 +12,7 @@ import { protectPortal } from '../middleware/portalAuth.middleware.js';
 import { protect } from '../middleware/auth.middleware.js';
 import { restrictTo } from '../middleware/role.middleware.js';
 import { ROLES } from '../config/constants.js';
+import { getPublicInventory } from '../controllers/portal.controller.js'; 
 
 const router = express.Router();
 
@@ -27,5 +28,6 @@ router.get('/my-quotations', protectPortal, getMyQuotations);
 router.get('/my-quotations/:id', protectPortal, getMyQuotationById);
 router.post('/my-quotations/:id/request', protectPortal, submitNegotiationRequest);
 router.post('/my-quotations/:id/confirm', protectPortal, confirmQuotationByCustomer);
+router.get('/inventory', protectPortal, getPublicInventory);
 
 export default router;

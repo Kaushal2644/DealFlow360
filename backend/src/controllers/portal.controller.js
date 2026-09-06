@@ -9,6 +9,8 @@ import { buildApprovalChain } from '../services/approvalRouter.js';
 import { logAudit } from '../services/auditLogger.js';
 import { env } from '../config/env.js';
 import { QUOTATION_STATUS, RISK_BANDS } from '../config/constants.js';
+import Product from '../models/Product.js';
+import StockLevel from '../models/StockLevel.js';
 
 const generatePortalToken = (customerId) =>
   jwt.sign({ id: customerId, type: 'customer_portal' }, env.jwtSecret, { expiresIn: env.jwtExpiresIn });
@@ -165,4 +167,28 @@ export const portalSignup = asyncHandler(async (req, res) => {
     'Customer account created',
     201
   );
+});
+
+// Customer-facing: shows what's available to buy, without internal details
+// like which warehouse or how much is reserved for other customers
+export const getPublicInventory = asyncHandler(async (req, res) => {
+  const products = await Product.find({ isActive: true });
+  const stockLevels = await StockLevel.find();
+
+  const availabilityMap = {};
+  stockLevels.forEach((s) => {
+    const pid = s.product.toString();
+    const available = s.qtyOnHand - s.qtyReserved;
+    availabilityMap[pid] = (availabilityMap[pid] || 0) + available;
+  });
+
+  const result = products.map((p) => ({
+    productId: p._id,
+    name: p.name,
+    category: p.category,
+    price: p.price,
+    availableQty: p.isSubscription ? null : (availabilityMap[p._id.toString()] || 0),
+  }));
+
+  return success(res, result, 'Inventory fetched');
 });

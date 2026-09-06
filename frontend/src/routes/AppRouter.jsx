@@ -28,6 +28,9 @@ import MyQuotationsPage from "../features/portal/MyQuotationsPage";
 import NegotiationPage from "../features/portal/NegotiationPage";
 import RoleRoute from "./RoleRoute";
 
+import InventoryOverviewPage from '../features/inventory/InventoryOverviewPage';
+import PortalInventoryPage from '../features/portal/PortalInventoryPage';
+
 export default function AppRouter() {
   return (
     <BrowserRouter>
@@ -80,6 +83,9 @@ export default function AppRouter() {
               <Route path="/products" element={<ProductCatalogPage />} />
               <Route path="/products/:id" element={<ProductDetailPage />} />
             </Route>
+            <Route element={<RoleRoute routeKey="inventory" />}>
+              <Route path="/inventory" element={<InventoryOverviewPage />} />
+            </Route>
           </Route>
         </Route>
 
@@ -91,6 +97,7 @@ export default function AppRouter() {
 
             <Route path="/portal/negotiation" element={<NegotiationPage />} />
           </Route>
+          <Route path="/portal/inventory" element={<PortalInventoryPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />

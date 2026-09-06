@@ -83,3 +83,51 @@ export const actOnApproval = asyncHandler(async (req, res) => {
 
   return success(res, quotation, `Step ${action}`);
 });
+
+export const adminApproveAnyQuotation = asyncHandler(async (req, res) => {
+  const { reason } = req.body;
+
+  const quotation = await Quotation.findById(req.params.id);
+  if (!quotation) return failure(res, 'Quotation not found', 404);
+
+  if ([QUOTATION_STATUS.CONFIRMED, QUOTATION_STATUS.REJECTED].includes(quotation.status)) {
+    return failure(res, `Cannot override a quotation that is already ${quotation.status}`, 400);
+  }
+
+  // Mark every existing approval step (if any) as approved by the admin
+  quotation.approvalSteps.forEach((step) => {
+    step.status = 'approved';
+    step.actedBy = req.user._id;
+    step.reason = reason || 'Admin override approval';
+    step.actedAt = new Date();
+  });
+
+  // If the quote never had an approval chain (e.g. still draft/negotiation),
+  // add one record so the override still shows up in the audit trail
+  if (quotation.approvalSteps.length === 0) {
+    quotation.approvalSteps.push({
+      role: 'admin',
+      status: 'approved',
+      actedBy: req.user._id,
+      reason: reason || 'Admin override approval',
+      actedAt: new Date(),
+    });
+  }
+
+  quotation.currentApprovalStepIndex = Math.max(0, quotation.approvalSteps.length - 1);
+  quotation.status = QUOTATION_STATUS.APPROVED;
+  quotation.lastActivityAt = new Date();
+
+  await quotation.save();
+
+  await logAudit({
+    entityType: 'Quotation',
+    entityId: quotation._id,
+    user: req.user,
+    action: 'admin_override_approved',
+    after: { status: quotation.status, previousRiskBand: quotation.riskBand },
+    reason: reason || 'Admin override approval',
+  });
+
+  return success(res, quotation, 'Quotation approved by admin override');
+});

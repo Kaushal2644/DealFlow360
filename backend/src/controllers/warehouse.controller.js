@@ -63,3 +63,43 @@ export const getStockLevels = asyncHandler(async (req, res) => {
 
   return success(res, stock, 'Stock levels fetched');
 });
+
+// Full inventory overview across all warehouses (admin-level detail)
+export const getInventoryOverview = asyncHandler(async (req, res) => {
+  const stockLevels = await StockLevel.find()
+    .populate('product', 'name category price')
+    .populate('warehouse', 'name');
+
+  const grouped = {};
+
+  stockLevels.forEach((s) => {
+    if (!s.product || !s.warehouse) return;
+    const pid = s.product._id.toString();
+
+    if (!grouped[pid]) {
+      grouped[pid] = {
+        productId: pid,
+        productName: s.product.name,
+        category: s.product.category,
+        price: s.product.price,
+        totalOnHand: 0,
+        totalReserved: 0,
+        totalAvailable: 0,
+        warehouses: [],
+      };
+    }
+
+    const available = s.qtyOnHand - s.qtyReserved;
+    grouped[pid].totalOnHand += s.qtyOnHand;
+    grouped[pid].totalReserved += s.qtyReserved;
+    grouped[pid].totalAvailable += available;
+    grouped[pid].warehouses.push({
+      warehouseName: s.warehouse.name,
+      qtyOnHand: s.qtyOnHand,
+      qtyReserved: s.qtyReserved,
+      qtyAvailable: available,
+    });
+  });
+
+  return success(res, Object.values(grouped), 'Inventory overview fetched');
+});

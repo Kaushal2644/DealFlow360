@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import useAuthStore from '../../app/authStore';
-import { ROUTE_PERMISSIONS } from '../../config/permissions';
+import { canAccess } from '../../config/permissions';
 
 const navItems = [
   { key: 'dashboard', label: 'Dashboard', path: '/dashboard' },
@@ -11,6 +11,7 @@ const navItems = [
   { key: 'invoices', label: 'Invoices', path: '/invoices' },
   { key: 'dealHealth', label: 'Deal Health', path: '/deal-health' },
   { key: 'reports', label: 'Reports', path: '/reports' },
+  { key: 'inventory', label: 'Inventory', path: '/inventory' },
   { key: 'discountConfig', label: 'Discount Config', path: '/admin/discount-config' },
   { key: 'products', label: 'Products', path: '/products' },
 ];
@@ -20,9 +21,7 @@ export default function TopNav() {
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
 
-  const visibleItems = navItems.filter((item) =>
-    ROUTE_PERMISSIONS[item.key]?.includes(user?.role)
-  );
+  const visibleItems = navItems.filter((item) => canAccess(item.key, user?.role));
 
   const handleLogout = () => {
     logout();
@@ -30,10 +29,10 @@ export default function TopNav() {
   };
 
   return (
-    <nav className="bg-blue-600 text-white px-6 py-3 flex items-center justify-between">
-      <div className="flex items-center gap-6">
+    <nav className="bg-blue-600 text-white px-6 py-3 flex items-center justify-between flex-wrap gap-2">
+      <div className="flex items-center gap-6 flex-wrap">
         <span className="font-bold text-lg">DealFlow360</span>
-        <div className="flex gap-4 text-sm">
+        <div className="flex gap-4 text-sm flex-wrap">
           {visibleItems.map((item) => (
             <NavLink
               key={item.path}

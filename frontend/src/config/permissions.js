@@ -9,6 +9,14 @@ export const ROUTE_PERMISSIONS = {
   reports: ['sales_manager', 'finance', 'admin'],
   discountConfig: ['admin'],
   products: ['admin'],
+  inventory: ['admin'],
 };
 
-export const canAccess = (routeKey, role) => ROUTE_PERMISSIONS[routeKey]?.includes(role);
+// Admin always passes, regardless of whether a route was explicitly
+// added to its permission list. This guarantees new features never
+// accidentally lock the admin out just because someone forgot to add
+// 'admin' to a new array.
+export const canAccess = (routeKey, role) => {
+  if (role === 'admin') return true;
+  return ROUTE_PERMISSIONS[routeKey]?.includes(role) || false;
+};

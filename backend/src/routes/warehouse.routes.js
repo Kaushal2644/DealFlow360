@@ -9,6 +9,7 @@ import {
 import { protect } from '../middleware/auth.middleware.js';
 import { restrictTo } from '../middleware/role.middleware.js';
 import { ROLES } from '../config/constants.js';
+import { getInventoryOverview } from '../controllers/warehouse.controller.js';
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ router.put('/:id', restrictTo(ROLES.ADMIN), updateWarehouse);
 
 router.get('/stock/levels', getStockLevels);
 router.post('/stock/levels', restrictTo(ROLES.ADMIN, ROLES.FINANCE), upsertStockLevel);
+router.get('/inventory/overview', restrictTo(ROLES.ADMIN), getInventoryOverview);
 
 export default router;
